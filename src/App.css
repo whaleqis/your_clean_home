@@ -1686,3 +1686,114 @@ body,
     display: grid;
   }
 }
+
+@media (max-width: 600px) {
+  .topbar {
+    display: block !important;
+  }
+
+  .nav {
+    height: 74px !important;
+    padding: 0 !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 12px !important;
+  }
+
+  .brand {
+    flex: 0 0 auto !important;
+    margin: 0 !important;
+  }
+
+  .brand img {
+    width: 72px !important;
+    height: auto !important;
+  }
+
+  .desktop-nav {
+    flex: 1 !important;
+    width: auto !important;
+    display: flex !important;
+    justify-content: flex-end !important;
+    align-items: center !important;
+    gap: 11px !important;
+    flex-wrap: nowrap !important;
+    font-size: 12px !important;
+    white-space: nowrap !important;
+  }
+
+  .nav-button {
+    display: none !important;
+  }
+
+  .hero {
+    padding: 0 0 44px !important;
+  }
+
+  .hero-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 16px !important;
+    padding-top: 18px !important;
+  }
+
+  .hero-panel {
+    order: 1 !important;
+    width: 100% !important;
+    padding: 18px !important;
+    border-radius: 32px !important;
+  }
+
+  .hero-logo-box {
+    display: none !important;
+  }
+
+  .hero-content {
+    order: 2 !important;
+    width: 100% !important;
+  }
+
+  .hero-content .badge,
+  .hero-content h1,
+  .hero-content p,
+  .hero-steps {
+    display: none !important;
+  }
+
+  .hero-actions {
+    margin-top: 0 !important;
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+  }
+
+  .hero-actions a {
+    width: 100% !important;
+  }
+  .calculator-grid {
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  .calculator-copy {
+    display: contents !important;
+  }
+
+  .calculator-copy .badge,
+  .calculator-copy h2,
+  .calculator-copy p {
+    order: 1;
+  }
+
+  .calculator-card {
+    order: 2;
+  }
+
+  .notice-card {
+    order: 3;
+    margin-top: 18px !important;
+  }
+}
