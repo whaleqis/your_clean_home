@@ -174,78 +174,22 @@ button, input, select { font: inherit; }
   color: var(--teal);
 }
 
-/* SERVICE SELECT */
-
-.service-select {
+select,
+.number-input {
   width: 100%;
-  padding: 22px 26px;
-  border-radius: 28px;
-  border: 2px solid transparent;
-  background: #f4f7f5;
-  font-size: 18px;
-  font-weight: 600;
-  color: #183b2f;
+  min-height: 54px;
+  border: 1px solid rgba(55, 88, 70, 0.18);
+  border-radius: 18px;
+  padding: 0 16px;
+  background: #f8fbf9;
+  color: var(--text);
   outline: none;
-  cursor: pointer;
-
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-
-  transition: all 0.25s ease;
-
-  background-image:
-    linear-gradient(45deg, transparent 50%, #183b2f 50%),
-    linear-gradient(135deg, #183b2f 50%, transparent 50%);
-    
-  background-position:
-    calc(100% - 28px) calc(50% - 4px),
-    calc(100% - 20px) calc(50% - 4px);
-
-  background-size: 8px 8px;
-  background-repeat: no-repeat;
-
-  box-shadow:
-    0 10px 30px rgba(0,0,0,0.04),
-    inset 0 0 0 1px rgba(24,59,47,0.08);
 }
 
-.service-select:hover {
-  transform: translateY(-1px);
-  box-shadow:
-    0 14px 40px rgba(0,0,0,0.06),
-    inset 0 0 0 1px rgba(24,59,47,0.12);
-}
-
-.service-select:focus {
-  border-color: #0d8aa5;
-  background: white;
-  box-shadow:
-    0 0 0 6px rgba(13,138,165,0.12);
-}
-
-/* MOBILE */
-
-@media (max-width: 768px) {
-  .service-select {
-    font-size: 18px;
-    padding: 18px 22px;
-    border-radius: 22px;
-  }
-}
-
-@media (max-width: 430px) {
-  .service-select {
-    font-size: 16px;
-    padding: 16px 18px;
-    border-radius: 18px;
-
-    background-position:
-      calc(100% - 22px) calc(50% - 3px),
-      calc(100% - 16px) calc(50% - 3px);
-
-    background-size: 7px 7px;
-  }
+select:focus,
+.number-input:focus {
+  border-color: var(--teal);
+  box-shadow: 0 0 0 4px rgba(13, 107, 124, 0.08);
 }
 
 input[type="range"] {
@@ -1234,28 +1178,6 @@ input[type="range"] {
   font-size: 14px;
 }
 
-.scroll-top-btn {
-  position: fixed;
-  right: 22px;
-  bottom: 22px;
-  z-index: 999;
-  width: 52px;
-  height: 52px;
-  border: 0;
-  border-radius: 50%;
-  background: var(--dark);
-  color: white;
-  font-size: 26px;
-  font-weight: 900;
-  cursor: pointer;
-  box-shadow: 0 14px 34px rgba(20, 50, 41, 0.22);
-}
-
-.scroll-top-btn:hover {
-  background: var(--teal);
-  transform: translateY(-2px);
-}
-
 /* =========================================================
    CLEAN RESPONSIVE CSS
    Phones + tablets
@@ -1705,44 +1627,62 @@ body,
   }
 }
 
-@media (max-width: 410px) {
-  .calculator-grid {
-    width: calc(100% - 28px) !important;
-    max-width: calc(100% - 28px) !important;
+
+/* Mobile add-ons accordion */
+.addons-toggle {
+  display: none;
+}
+
+.addons-arrow {
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+.addons-arrow.open {
+  transform: rotate(90deg);
+}
+
+@media (max-width: 600px) {
+  .addons-field > label {
+    display: none;
   }
 
-  .calculator-card {
-    padding: 16px !important;
-    border-radius: 22px !important;
-    overflow: hidden !important;
+  .addons-toggle {
+    width: 100%;
+    min-height: 58px;
+    border: 0;
+    border-radius: 18px;
+    background: var(--dark);
+    color: white;
+    padding: 0 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    font-weight: 900;
+    cursor: pointer;
   }
 
-  .calculator-card select {
-    font-size: 15px !important;
-    padding-left: 12px !important;
-    padding-right: 34px !important;
+  .addons-toggle span {
+    color: white;
   }
 
-  .label-row {
-    align-items: center !important;
+  .addons-toggle svg {
+    color: #d4e77f;
   }
 
-  .label-row label {
-    font-size: 16px !important;
+  .addons-field .addons {
+    display: none;
+    margin-top: 14px;
   }
 
-  .label-row strong {
-    font-size: 15px !important;
+  .addons-field .addons.addons-open {
+    display: grid;
   }
+}
 
-  .addon {
-    padding: 14px !important;
-  }
-  .scroll-top-btn {
-    right: 14px;
-    bottom: 14px;
-    width: 46px;
-    height: 46px;
-    font-size: 22px;
+@media (min-width: 601px) {
+  .addons-field .addons {
+    display: grid;
   }
 }
