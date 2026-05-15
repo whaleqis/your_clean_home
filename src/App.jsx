@@ -409,6 +409,7 @@ export default function App() {
   const [hours, setHours] = useState(1);
   const [drySelections, setDrySelections] = useState({});
   const [addonValues, setAddonValues] = useState({});
+  const [showAddOns, setShowAddOns] = useState(false);
   const [modalService, setModalService] = useState(null);
   const [clientName, setClientName] = useState("");
   const [clientPhone, setClientPhone] = useState("");
@@ -510,6 +511,8 @@ export default function App() {
 const handleServiceChange = (value) => {
     setService(value);
     setAddonValues({});
+    setShowAddOns(false);
+
     if (value !== "dry") {
       setDrySelections({});
     }
@@ -605,17 +608,6 @@ ${selectedAddOnsSummary || "Չկան"}
                 })}
               </div>
             </motion.div>
-          </div>
-        </section>
-
-        <section id="services" className="section services-section">
-          <div className="container">
-            <div className="section-head">
-              <h2>Ծառայություններ</h2>
-            </div>
-            <div className="services-grid">
-              {services.map((item) => <ServiceCard key={item.id} service={item} onOpen={setModalService} />)}
-            </div>
           </div>
         </section>
 
@@ -745,9 +737,20 @@ ${selectedAddOnsSummary || "Չկան"}
               )}
 
               {calculatorAddOns[service]?.length > 0 && (
-                <div className="field">
-                  <label>Հավելյալ ծառայություններ</label>
-                  <div className="addons">
+                <div className="field addons-field">
+                  <button
+                    type="button"
+                    className="addons-toggle"
+                    onClick={() => setShowAddOns(!showAddOns)}
+                  >
+                    <span>Հավելյալ ծառայություններ</span>
+                    <ChevronRight
+                      size={20}
+                      className={showAddOns ? "addons-arrow open" : "addons-arrow"}
+                    />
+                  </button>
+
+                  <div className={showAddOns ? "addons addons-open" : "addons"}>
                     {calculatorAddOns[service].map((item) => {
                       if (item.type === "checkbox") {
                         return (
@@ -825,6 +828,18 @@ ${selectedAddOnsSummary || "Չկան"}
                   Ստանալ վերջնական հաշվարկ
                 </a>
               </div>
+            </div>
+          </div>
+        </section>
+
+        
+<section id="services" className="section services-section">
+          <div className="container">
+            <div className="section-head">
+              <h2>Ծառայություններ</h2>
+            </div>
+            <div className="services-grid">
+              {services.map((item) => <ServiceCard key={item.id} service={item} onOpen={setModalService} />)}
             </div>
           </div>
         </section>
