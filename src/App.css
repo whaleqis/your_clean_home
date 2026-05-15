@@ -1178,490 +1178,486 @@ input[type="range"] {
   font-size: 14px;
 }
 
-@media (max-width: 800px) {
-  .footer-grid {
-    grid-template-columns: 1fr;
-    text-align: center;
-  }
+/* =========================================================
+   CLEAN RESPONSIVE CSS
+   Phones + tablets
+   ========================================================= */
 
-  .footer-brand img {
-    margin: 0 auto;
-  }
-
-  .footer-brand p {
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .footer-col a {
-    justify-content: center;
-  }
+html,
+body,
+#root {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
-@media (max-width: 780px) {
-  .dry-options {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 480px) {
-  .dry-options {
-    grid-template-columns: 1fr;
-  }
-}
-
-
-/* =========================
-   MOBILE RESPONSIVE FIXES
-   Added for better phone view
-   ========================= */
-
-@media (max-width: 1024px) {
+/* Tablets / small laptops */
+@media (max-width: 1100px) {
   .container {
-    width: min(100% - 32px, 1200px);
+    width: min(100% - 36px, 1180px);
   }
 
   .hero-grid,
   .calculator-grid,
-  .contact-grid,
-  .footer-grid {
+  .contact-layout,
+  .contact-grid {
     grid-template-columns: 1fr !important;
   }
 
+  .calculator-copy {
+    position: static !important;
+  }
+
   .services-grid,
-  .price-grid {
+  .process-grid {
     grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  .price-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
   }
 }
 
-@media (max-width: 768px) {
-  body {
-    overflow-x: hidden;
+/* iPads and large phones */
+@media (max-width: 820px) {
+  .desktop-nav,
+  .nav-links {
+    display: none !important;
+  }
+
+  .nav {
+    height: 82px;
+  }
+
+  .brand img,
+  .nav-logo img {
+    width: 110px !important;
+    height: auto !important;
   }
 
   .container {
-    width: min(100% - 24px, 1200px);
-  }
-
-  .nav-inner {
-    height: auto;
-    min-height: 78px;
-    padding: 12px 0;
-    gap: 12px;
-  }
-
-  .nav-links {
-    display: none;
-  }
-
-  .nav-logo img,
-  .brand img,
-  header img {
-    width: 95px;
-    height: auto;
-    object-fit: contain;
-  }
-
-  .nav-cta,
-  .nav-inner .btn,
-  .nav-inner a[href="#calculator"] {
-    padding: 12px 18px;
-    font-size: 15px;
-    border-radius: 999px;
+    width: min(100% - 28px, 1180px);
   }
 
   .hero {
-    padding: 38px 0 54px;
+    padding: 42px 0 64px !important;
   }
 
   .hero-grid {
-    gap: 32px;
+    grid-template-columns: 1fr !important;
+    gap: 34px !important;
   }
 
-  .hero-logo-box {
-    margin-bottom: 18px;
-  }
-
-  .hero-logo-box img {
-    width: 220px !important;
-    height: auto !important;
-    object-fit: contain;
+  .hero-content,
+  .calculator-grid {
+    width: 100% !important;
+    max-width: 680px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
   }
 
   .hero h1 {
-    max-width: 100%;
-    font-size: clamp(38px, 11vw, 58px) !important;
+    font-size: clamp(38px, 8vw, 56px) !important;
     line-height: 1.08 !important;
-    letter-spacing: -0.03em !important;
+    letter-spacing: -0.025em !important;
+    max-width: 100% !important;
+    overflow-wrap: break-word !important;
   }
 
   .hero p {
-    max-width: 100%;
-    font-size: 17px;
-    line-height: 1.65;
+    font-size: 17px !important;
+    line-height: 1.65 !important;
+    max-width: 100% !important;
   }
 
-  .hero-actions {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 12px;
+  .hero-actions,
+  .contact-actions {
+    flex-direction: column !important;
+    align-items: stretch !important;
   }
 
   .hero-actions a,
-  .hero-actions button {
-    width: 100%;
-    justify-content: center;
+  .hero-actions button,
+  .primary-button,
+  .secondary-button {
+    width: 100% !important;
+    justify-content: center !important;
+    white-space: normal !important;
+    text-align: center !important;
   }
 
-  .hero-steps {
+  .hero-steps,
+  .services-grid,
+  .price-grid,
+  .process-grid,
+  .addons,
+  .frequency,
+  .form-row,
+  .modal-list {
     grid-template-columns: 1fr !important;
-    gap: 14px;
   }
 
-  .hero-steps > div {
-    min-height: auto;
-    padding: 22px;
+  .hero-panel,
+  .hero-card,
+  .hero-visual {
+    width: 100% !important;
+    max-width: 560px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  .hero-logo-box img {
+    width: 210px !important;
+    height: auto !important;
   }
 
   .section {
-    padding: 58px 0;
-  }
-
-  .section-head h2 {
-    font-size: clamp(32px, 9vw, 46px);
-    line-height: 1.08;
-  }
-
-  .services-grid,
-  .price-grid,
-  .dry-options {
-    grid-template-columns: 1fr !important;
+    padding: 58px 0 !important;
   }
 
   .service-card,
   .calculator-card,
+  .summary-card,
   .contact-card,
-  .price-card {
-    border-radius: 28px;
-    padding: 24px;
+  .price-card,
+  .process-card,
+  .request-form {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 24px !important;
+    border-radius: 28px !important;
+    box-sizing: border-box !important;
   }
 
   .service-card {
     min-height: auto !important;
   }
 
-  .service-top {
-    gap: 14px;
+  .calculator-section,
+  #calculator {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
   }
 
-  .service-title-wrap h3,
-  .service-card h3 {
-    font-size: 22px;
-    line-height: 1.2;
+  .calculator-copy,
+  .calculator-left {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
   }
 
-  .service-list li {
-    font-size: 15px;
-    line-height: 1.5;
+  .notice-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    padding: 22px !important;
+    border-radius: 26px !important;
+    display: flex !important;
+    align-items: flex-start !important;
+    gap: 14px !important;
+    overflow: hidden !important;
   }
 
-  .calculator-grid {
-    gap: 28px;
+  .notice-card > div {
+    min-width: 0 !important;
   }
 
-  .calculator-copy h2,
-  .calculator-left h2 {
-    font-size: clamp(34px, 10vw, 52px);
-    line-height: 1.08;
+  .notice-card strong,
+  .notice-card span {
+    max-width: 100% !important;
+    white-space: normal !important;
+    overflow-wrap: break-word !important;
   }
 
-  .calculator-card {
-    padding: 22px;
-  }
-
-  .field,
-  .form-field {
-    margin-bottom: 18px;
-  }
-
-  .label-row {
-    gap: 12px;
-    align-items: flex-start;
-  }
-
-  select,
-  input,
-  textarea,
-  .number-input {
-    font-size: 16px;
+  .dry-options {
+    grid-template-columns: repeat(2, 1fr) !important;
   }
 
   .dry-option {
     min-height: auto !important;
-    padding: 18px;
   }
 
   .dry-option img {
-    height: 150px !important;
-    object-fit: contain;
-  }
-
-  .dry-card-counter,
-  .mini-counter {
-    width: 100%;
-    justify-content: center;
-  }
-
-  .result-card,
-  .summary-card {
-    border-radius: 28px;
-    padding: 24px;
-  }
-
-  .result-card strong,
-  .total-price {
-    font-size: clamp(38px, 11vw, 52px) !important;
-    line-height: 1.05;
-  }
-
-  .result-row,
-  .summary-row {
-    gap: 14px;
-    align-items: flex-start;
-  }
-
-  .form-row {
-    grid-template-columns: 1fr !important;
-    gap: 16px;
-  }
-
-  .contact-grid {
-    gap: 24px;
-  }
-
-  .contact-card img,
-  .contact-logo,
-  .contact-info img {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .footer {
-    padding: 46px 0 20px;
+    height: 145px !important;
+    object-fit: contain !important;
   }
 
   .footer-grid {
     grid-template-columns: 1fr !important;
-    text-align: center;
-    gap: 34px;
+    text-align: center !important;
+    gap: 34px !important;
   }
 
   .footer-brand img {
-    margin: 0 auto;
+    margin: 0 auto !important;
   }
 
   .footer-brand p {
-    margin-left: auto;
-    margin-right: auto;
+    margin-left: auto !important;
+    margin-right: auto !important;
   }
 
   .footer-col a {
-    justify-content: center;
-  }
-
-  .footer-bottom {
-    font-size: 13px;
-    padding-left: 16px;
-    padding-right: 16px;
+    justify-content: center !important;
   }
 }
 
-@media (max-width: 480px) {
+/* Regular phones */
+@media (max-width: 600px) {
   .container {
-    width: min(100% - 18px, 1200px);
+    width: min(100% - 22px, 1180px);
   }
 
-  .nav-inner {
-    min-height: 70px;
+  .nav {
+    height: 76px !important;
   }
 
-  .nav-logo img,
   .brand img,
-  header img {
-    width: 82px;
+  .nav-logo img {
+    width: 96px !important;
   }
 
-  .nav-cta,
-  .nav-inner .btn,
-  .nav-inner a[href="#calculator"] {
-    padding: 10px 14px;
-    font-size: 14px;
+  .nav-button {
+    display: none !important;
   }
 
   .hero {
-    padding-top: 30px;
+    padding: 34px 0 54px !important;
   }
 
-  .hero-logo-box img {
-    width: 190px !important;
+  .badge {
+    font-size: 13px !important;
+    padding: 9px 14px !important;
   }
 
   .hero h1 {
-    font-size: clamp(34px, 12vw, 48px) !important;
+    font-size: clamp(32px, 10vw, 42px) !important;
+    line-height: 1.12 !important;
   }
 
   .hero p {
-    font-size: 16px;
+    font-size: 16px !important;
+    line-height: 1.65 !important;
   }
 
-  .section {
-    padding: 48px 0;
+  .hero-logo-box img {
+    width: 180px !important;
+  }
+
+  .section-head h2,
+  .calculator-copy h2,
+  .contact-card h2 {
+    font-size: clamp(28px, 9vw, 38px) !important;
+    line-height: 1.12 !important;
+    letter-spacing: -0.035em !important;
+  }
+
+  .section-head p,
+  .calculator-copy p,
+  .contact-card p {
+    font-size: 16px !important;
   }
 
   .service-card,
   .calculator-card,
+  .summary-card,
   .contact-card,
   .price-card,
-  .result-card,
-  .summary-card {
-    padding: 20px;
-    border-radius: 24px;
+  .process-card,
+  .request-form {
+    padding: 22px !important;
+    border-radius: 26px !important;
   }
 
-  .service-icon {
-    width: 54px;
-    height: 54px;
-    border-radius: 18px;
+  .dry-options {
+    grid-template-columns: 1fr !important;
   }
 
   .dry-option img {
-    height: 135px !important;
+    height: 140px !important;
   }
 
-  .result-card strong,
-  .total-price {
-    font-size: clamp(34px, 12vw, 44px) !important;
+  .total-box {
+    padding: 22px !important;
+    border-radius: 26px !important;
   }
 
-  .footer-links,
-  .footer-col {
-    width: 100%;
+  .total-box > div:first-child strong {
+    font-size: 38px !important;
+  }
+
+  select,
+  .number-input,
+  .form-field input,
+  .form-field textarea {
+    font-size: 16px !important;
   }
 }
 
-
-/* =========================
-   PHONE OVERFLOW FINAL FIX
-   Prevents hero text/buttons from going outside screen
-   ========================= */
-
-@media (max-width: 768px) {
-  html,
-  body,
-  #root,
-  .page {
-    width: 100%;
-    max-width: 100%;
-    overflow-x: hidden;
+/* iPhone widths */
+@media (max-width: 430px) {
+  .container {
+    width: min(100% - 18px, 1180px);
   }
 
-  * {
-    max-width: 100%;
-  }
-
-  .container,
-  .hero-grid,
   .hero-content,
-  .calculator-grid,
-  .services-grid,
-  .price-grid,
-  .contact-grid {
-    width: 100%;
-    max-width: 100%;
-    overflow: hidden;
+  .calculator-grid {
+    width: calc(100% - 18px) !important;
+    max-width: calc(100% - 18px) !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
   }
 
-  .hero-content {
-    padding-left: 22px !important;
-    padding-right: 22px !important;
-  }
-
-  /* .hero h1 {
-    max-width: 100%;
-    font-size: clamp(32px, 10vw, 46px) !important;
-    line-height: 1.12 !important;
-    letter-spacing: -0.025em !important;
-    word-break: normal;
-    overflow-wrap: break-word;
-    hyphens: auto;
+  .hero h1 {
+    font-size: 31px !important;
+    line-height: 1.16 !important;
+    letter-spacing: -0.015em !important;
   }
 
   .hero p {
-    max-width: 100%;
-    font-size: 16px !important;
-    line-height: 1.6 !important;
-    overflow-wrap: break-word;
-  } */
-  .hero h1,
-  .hero p,
-  .badge {
-    margin-left: 0 !important;
+    font-size: 15.5px !important;
+    line-height: 1.65 !important;
   }
 
-  .hero h1 {
-    font-size: 36px !important;
-    line-height: 1.15 !important;
-  }
-
-  .hero-actions {
-    width: 100%;
-    max-width: 100%;
-  }
-
-  .hero-actions a,
-  .hero-actions button {
-    width: 100%;
-    max-width: 100%;
-    white-space: normal;
-    text-align: center;
-  }
-
-  .hero-steps,
-  .hero-steps > div {
-    width: 100%;
-    max-width: 100%;
-  }
-
-  .service-card,
-  .calculator-card,
-  .contact-card,
-  .price-card,
-  .dry-option {
-    width: 100%;
-    max-width: 100%;
-  }
-  .hero-card,
-  .hero-visual,
-  .hero-services,
-  .hero-logo-box {
-    margin-left: auto;
-    margin-right: auto;
-  }
-
+  .hero-panel,
   .hero-card,
   .hero-visual {
-    width: 100%;
-    max-width: 420px;
+    max-width: 100% !important;
   }
-}
 
-@media (max-width: 420px) {
-  .hero h1 {
-    font-size: 36px !important;
+  .hero-logo-box {
+    min-height: 120px !important;
+    border-radius: 24px !important;
   }
 
   .hero-logo-box img {
-    width: 170px !important;
+    width: 160px !important;
+  }
+
+  .notice-card {
+    padding: 18px !important;
+    border-radius: 24px !important;
+    gap: 12px !important;
+  }
+
+  .notice-card svg {
+    width: 26px !important;
+    min-width: 26px !important;
+  }
+
+  .notice-card strong {
+    font-size: 17px !important;
+    line-height: 1.3 !important;
+  }
+
+  .notice-card span {
+    font-size: 15px !important;
+    line-height: 1.55 !important;
+  }
+
+  .calculator-copy h2 {
+    font-size: 27px !important;
+    line-height: 1.16 !important;
+  }
+
+  .calculator-copy p {
+    font-size: 15px !important;
+  }
+
+  .calculator-card {
+    padding: 18px !important;
+    border-radius: 24px !important;
+  }
+
+  .label-row {
+    align-items: flex-start !important;
+    gap: 10px !important;
+  }
+
+  .label-row strong {
+    white-space: nowrap !important;
+  }
+
+  .field label,
+  .label-row label {
+    font-size: 17px !important;
+    line-height: 1.25 !important;
+  }
+
+  .addons {
+    grid-template-columns: 1fr !important;
+  }
+
+  .dry-option {
+    padding: 16px !important;
+    border-radius: 24px !important;
+  }
+
+  .dry-option img {
+    height: 128px !important;
+  }
+
+  .footer {
+    padding: 44px 0 20px !important;
+  }
+}
+
+/* Small iPhone SE */
+@media (max-width: 375px) {
+  .hero h1 {
+    font-size: 29px !important;
+  }
+
+  .hero p {
+    font-size: 15px !important;
+  }
+
+  .hero-content,
+  .calculator-grid {
+    width: calc(100% - 14px) !important;
+    max-width: calc(100% - 14px) !important;
+  }
+
+  .calculator-card,
+  .notice-card {
+    padding: 16px !important;
+  }
+
+  .total-box > div:first-child strong {
+    font-size: 32px !important;
+  }
+}
+
+@media (max-width: 410px) {
+  .calculator-grid {
+    width: calc(100% - 28px) !important;
+    max-width: calc(100% - 28px) !important;
+  }
+
+  .calculator-card {
+    padding: 16px !important;
+    border-radius: 22px !important;
+    overflow: hidden !important;
+  }
+
+  .calculator-card select {
+    font-size: 15px !important;
+    padding-left: 12px !important;
+    padding-right: 34px !important;
+  }
+
+  .label-row {
+    align-items: center !important;
+  }
+
+  .label-row label {
+    font-size: 16px !important;
+  }
+
+  .label-row strong {
+    font-size: 15px !important;
+  }
+
+  .addon {
+    padding: 14px !important;
   }
 }
