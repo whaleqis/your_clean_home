@@ -991,8 +991,8 @@ ${selectedAddOnsSummary || "Չկան"}
 
             <div className="footer-col">
               <h4>Կապ մեզ հետ</h4>
-              <a href="tel:+37441011043"><Phone size={18} />041 011 043</a>
-              <a href="https://wa.me/37441011043" target="_blank"><MessageCircle size={18} />WhatsApp</a>
+              <a href="tel:+37441101143"><Phone size={18} />041 011 043</a>
+              <a href="https://wa.me/37441101143" target="_blank"><MessageCircle size={18} />WhatsApp</a>
               <a href="https://t.me/your_clean_home" target="_blank"><Send size={18} />Telegram</a>
               <a href="https://instagram.com/your_clean_home.yerevan" target="_blank"><InstagramIcon size={18} />@your_clean_home.yerevan</a>
             </div>
