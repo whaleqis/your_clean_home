@@ -1000,6 +1000,13 @@ ${selectedAddOnsSummary || "Չկան"}
             © 2026 Your Clean Home. Բոլոր իրավունքները պաշտպանված են։
           </div>
         </footer>
+        <button
+          className="scroll-top-btn"
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          aria-label="Go to top"
+        >
+          ↑
+        </button>
       </main>
 
       <ServiceModal service={modalService} onClose={() => setModalService(null)} />
