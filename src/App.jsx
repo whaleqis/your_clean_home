@@ -648,7 +648,11 @@ ${selectedAddOnsSummary || "Չկան"}
             <div className="calculator-card">
               <div className="field">
                 <label>Ծառայության տեսակ</label>
-                <select value={service} onChange={(e) => handleServiceChange(e.target.value)}>
+                <select
+                  className="service-select"
+                  value={service}
+                  onChange={(e) => handleServiceChange(e.target.value)}
+                >
                   {Object.entries(calculatorRates).map(([key, item]) => (
                     <option key={key} value={key}>
                       {item.label} — {item.range}
