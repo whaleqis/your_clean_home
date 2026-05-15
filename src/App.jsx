@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import {
   Calculator,
@@ -395,12 +395,19 @@ function InstagramIcon({ size = 18 }) {
 }
 
 export default function App() {
+  const [showScrollTop, setShowScrollTop] = useState(false);
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 500);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
   const [service, setService] = useState("deep");
   const [sqm, setSqm] = useState(60);
   const [hours, setHours] = useState(1);
   const [drySelections, setDrySelections] = useState({});
-  const [dryActiveItem, setDryActiveItem] = useState("sofa_3");
-  const [dryCount, setDryCount] = useState(1);
   const [addonValues, setAddonValues] = useState({});
   const [modalService, setModalService] = useState(null);
   const [clientName, setClientName] = useState("");
@@ -509,6 +516,11 @@ const handleServiceChange = (value) => {
   };
 
 
+  const dryTotalCount = Object.values(drySelections).reduce(
+    (sum, value) => sum + Number(value || 0),
+    0
+  );
+
   const selectedAddOnsSummary =
     service === "dry"
       ? dryCleaningItems
@@ -540,7 +552,7 @@ const handleServiceChange = (value) => {
 
   const orderSummary = `
 Ծառայություն: ${calculation.selectedService.label}
-${service === "ironing" ? `Ժամեր: ${hours}` : service === "dry" ? `Կահույքի քանակ: ${dryCount} հատ` : `Մակերես: ${sqm} քմ`}
+${service === "ironing" ? `Ժամեր: ${hours}` : service === "dry" ? `Կահույքի քանակ: ${dryTotalCount} հատ` : `Մակերես: ${sqm} քմ`}
 Հավելյալ ծառայություններ:
 ${selectedAddOnsSummary || "Չկան"}
 Հիմնական արժեք: ${formatAMD(calculation.base)}
@@ -874,7 +886,7 @@ ${selectedAddOnsSummary || "Չկան"}
                 <p><span>Ծառայություն</span><b>{calculation.selectedService.label}</b></p>
                 <p>
                   <span>{service === "ironing" ? "Ժամեր" : service === "dry" ? "Կահույքի քանակ" : "Մակերես"}</span>
-                  <b>{service === "ironing" ? `${hours} ժամ` : service === "dry" ? `${dryCount} հատ` : `${sqm} քմ`}</b>
+                  <b>{service === "ironing" ? `${hours} ժամ` : service === "dry" ? `${dryTotalCount} հատ` : `${sqm} քմ`}</b>
                 </p>
                 <p><span>Հավելյալներ</span><b>{formatAMD(calculation.addOnsTotal)}</b></p>
                 <p className="summary-total"><span>Մոտավոր արժեք</span><b>{formatAMD(calculation.total)}</b></p>
@@ -888,7 +900,7 @@ ${selectedAddOnsSummary || "Չկան"}
               encType="multipart/form-data"
             >
               <input type="hidden" name="Ծառայություն" value={calculation.selectedService.label} />
-              <input type="hidden" name={service === "ironing" ? "Ժամեր" : service === "dry" ? "Կահույքի քանակ" : "Մակերես"} value={service === "ironing" ? `${hours} ժամ` : service === "dry" ? `${dryCount} հատ` : `${sqm} քմ`} />
+              <input type="hidden" name={service === "ironing" ? "Ժամեր" : service === "dry" ? "Կահույքի քանակ" : "Մակերես"} value={service === "ironing" ? `${hours} ժամ` : service === "dry" ? `${dryTotalCount} հատ` : `${sqm} քմ`} />
               <input type="hidden" name="Հավելյալ ծառայություններ" value={selectedAddOnsSummary || "Չկան"} />
               <input type="hidden" name="Հիմնական արժեք" value={formatAMD(calculation.base)} />
               <input type="hidden" name="Հավելյալների արժեք" value={formatAMD(calculation.addOnsTotal)} />
@@ -1000,13 +1012,15 @@ ${selectedAddOnsSummary || "Չկան"}
             © 2026 Your Clean Home. Բոլոր իրավունքները պաշտպանված են։
           </div>
         </footer>
-        <button
-          className="scroll-top-btn"
-          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          aria-label="Go to top"
-        >
-          ↑
-        </button>
+        {showScrollTop && (
+          <button
+            className="scroll-top-btn"
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            aria-label="Go to top"
+          >
+            ↑
+          </button>
+        )}
       </main>
 
       <ServiceModal service={modalService} onClose={() => setModalService(null)} />
