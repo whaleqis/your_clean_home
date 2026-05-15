@@ -1682,4 +1682,11 @@ body,
   .addon {
     padding: 14px !important;
   }
+  .scroll-top-btn {
+    right: 14px;
+    bottom: 14px;
+    width: 46px;
+    height: 46px;
+    font-size: 22px;
+  }
 }
