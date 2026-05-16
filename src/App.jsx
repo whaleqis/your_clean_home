@@ -214,7 +214,7 @@ const calculatorAddOns = {
 const steps = [
   { number: 1, label: "Ծառայություն" },
   { number: 2, label: "Հաշվարկ" },
-  { number: 3, label: "Հավելյալներ" },
+  { number: 3, label: "Հավելյալ" },
   { number: 4, label: "Հայտ" },
 ];
 
@@ -471,7 +471,7 @@ ${selectedAddOnsSummary || "Չկան"}
                   <b>{service === "ironing" ? `${hours} ժամ` : service === "dry" ? `${dryTotalCount} հատ` : `${sqm} քմ`}</b>
                 </div>
                 <div>
-                  <span>Հավելյալներ</span>
+                  <span>Հավելյալ</span>
                   <b>{formatAMD(calculation.addOnsTotal)}</b>
                 </div>
                 <div className="summary-total">
