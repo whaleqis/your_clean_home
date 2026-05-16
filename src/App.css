@@ -536,7 +536,7 @@ input[type="range"] {
   align-items: center;
   justify-content: center;
   gap: 12px;
-  background: rgba(13,113,128,.08);
+  background: white;
   border-radius: 999px;
   padding: 8px;
 }
