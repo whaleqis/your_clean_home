@@ -322,8 +322,14 @@ export default function App() {
 
     const base = isIroning
       ? quantity * selectedServiceRate.rate
-      : service === "steam" && quantity > 1 && quantity < 10
-      ? 20000
+      : service === "regular" && quantity >= 1 && quantity <= 40
+      ? 14000
+      : service === "deep" && quantity >= 1 && quantity <= 40
+      ? 26000
+      : service === "post" && quantity >= 1 && quantity <= 40
+      ? 32000
+      : service === "steam" && quantity >= 1 && quantity < 10
+      ? 15000
       : service === "steam"
       ? quantity * 1000
       : quantity * selectedServiceRate.rate;
@@ -610,8 +616,14 @@ ${selectedAddOnsSummary || "Չկան"}
                   <span>Մոտավոր արժեք</span>
                   <strong>{formatAMD(calculation.total)}</strong>
                   <small>
-                    {service === "steam"
-                      ? "Մինչև 10 քմ արժեքը՝ 29,000 դրամ, 10 քմ-ից բարձր՝ 1,000 դրամ / 1 քմ"
+                    {service === "regular"
+                      ? "1–40 քմ արժեքը՝ 14,000 դրամ, 40 քմ-ից բարձր՝ 350 դրամ / 1 քմ"
+                      : service === "deep"
+                      ? "1–40 քմ արժեքը՝ 26,000 դրամ, 40 քմ-ից բարձր՝ 650 դրամ / 1 քմ"
+                      : service === "post"
+                      ? "1–40 քմ արժեքը՝ 32,000 դրամ, 40 քմ-ից բարձր՝ 800 դրամ / 1 քմ"
+                      : service === "steam"
+                      ? "Մինչև 10 քմ արժեքը՝ 15,000 դրամ, 10 քմ-ից բարձր՝ 1,000 դրամ / 1 քմ"
                       : `${calculation.selectedService.label} — ${calculation.selectedService.range}`}
                   </small>
                 </div>
