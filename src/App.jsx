@@ -90,24 +90,52 @@ const services = [
     icon: Sparkles,
     title: "Համալիր մաքրում",
     subtitle: "Խորը և մանրակրկիտ մաքրում",
-    items: [
-      "Առաստաղի, հատակի և պատերի լվացում՝ հատուկ նյութերով",
-      "Սալիկների լվացում",
-      "Լոգախցիկի և վաննայի, լվացարանի և ծորակների մաքրում",
-      "Փոշու և նստվածքի մաքրում",
-      "Դռների մաքրում",
-      "Հայելիների և ապակե մակերեսների մաքրում",
-      "Զուգարանակոնքի մաքրում՝ ներսից և դրսից",
-      "Հատակի փոշեկուլով մաքրում",
-      "Հատակի թաց մաքրում հատուկ նյութերով",
-      "Ջահերի մաքրում",
-      "«Գորգոց»-ի յուղազերծում և լվացում",
-      "Աշխատասեղանի յուղազերծում և լվացում",
-      "Լվացարանի, ծորակի մաքրում",
-      "Գազօջախի, վառարանի, օդաքարշ համակարգի յուղազերծում և մաքրում",
-      "Կահույքի արտաքին մակերեսների մաքրում",
-      "Աղբամանի հատվածի լվացում և մաքրում",
-      "Լուսամուտների լվացում",
+    sections: [
+      {
+        title: "Սանհանգույց",
+        items: [
+          "Առաստաղի, հատակի և պատերի լվացում՝ հատուկ նյութերով",
+          "Սալիկների լվացում՝ ներառյալ անկյունները և միացման տեղերը",
+          "Լոգախցիկի և վաննայի, լվացարանի և ծորակների մաքրում",
+          "Փոշու և նստվածքի մաքրում",
+          "Դռների մաքրում",
+          "Հայելիների և ապակե մակերեսների մաքրում",
+          "Զուգարանակոնքի մաքրում՝ ներսից և դրսից",
+        ],
+      },
+      {
+        title: "Խոհանոց",
+        items: [
+          "Հատակի փոշեկուլով մաքրում",
+          "Հատակի թաց մաքրում հատուկ նյութերով",
+          "Առաստաղի և պատերի մաքրում",
+          "Ջահերի մաքրում",
+          "«Գորգոց»-ի յուղազերծում և լվացում",
+          "Աշխատասեղանի յուղազերծում և լվացում",
+          "Լվացարանի և ծորակի մաքրում",
+          "Գազօջախի, վառարանի և օդաքարշ համակարգի յուղազերծում և մաքրում",
+          "Կահույքի արտաքին մակերեսների մաքրում",
+          "Դռների և բռնակների փոշու և կեղտի հեռացում",
+          "Հայելիների և ապակե մակերեսների մաքրում",
+          "Աղբամանի հատվածի լվացում և մաքրում",
+          "Լուսամուտների լվացում",
+        ],
+      },
+      {
+        title: "Ննջասենյակ և Հյուրասենյակ",
+        items: [
+          "Հատակի փոշեկուլով մաքրում",
+          "Հատակի թաց մաքրում հատուկ նյութերով",
+          "Առաստաղի և պատերի մաքրում",
+          "Ջահերի մաքրում",
+          "Կահույքի և բոլոր մակերեսների մաքրում",
+          "Մահճակալի, կողային սեղանիկների և պահարանների արտաքին մակերեսների մաքրում",
+          "Աքսեսուարների, լուսանկարների շրջանակների, նկարների և դեկորի փոշու մաքրում",
+          "Հայելիների և ապակե մակերեսների լվացում",
+          "Դռների և բռնակների լվացում",
+          "Լուսամուտների լվացում",
+        ],
+      },
     ],
   },
   {
@@ -160,12 +188,9 @@ const services = [
     title: "Փափուկ կահույքի քիմմաքրում",
     subtitle: "Փափուկ կահույքի քիմմաքրում",
     items: [
-      "Բծերի և տհաճ հոտերի նվազեցում",
+      "Հատուկ նյութերով անվտանգ մաքրում քիմմաքրման սարքով",
+      "Բծերի և տհաճ հոտերի անցկացնում",
       "Փոշու և կեղտի խորքային հեռացում",
-      "Փափուկ մակերեսների թարմացում",
-      "Հատուկ նյութերով անվտանգ մաքրում",
-      "Բազմոցների և աթոռների մշակում",
-      "Կենդանիների մազերի հեռացում",
     ],
   },
 ];
@@ -232,6 +257,34 @@ function InstagramIcon({ size = 18 }) {
   );
 }
 
+function IncludedList({ service }) {
+  const sections = service.sections || [
+    {
+      title: null,
+      items: service.items || [],
+    },
+  ];
+
+  return (
+    <div className="included-sections">
+      {sections.map((section) => (
+        <div className="included-section" key={section.title || "default"}>
+          {section.title && <h4>{section.title}</h4>}
+
+          <ul>
+            {section.items.map((item) => (
+              <li key={item}>
+                <CheckCircle2 size={17} />
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export default function App() {
   const [step, setStep] = useState(1);
   const [service, setService] = useState(null);
@@ -244,6 +297,37 @@ export default function App() {
   const [clientPhone, setClientPhone] = useState("");
   const [clientAddress, setClientAddress] = useState("");
   const [clientMessage, setClientMessage] = useState("");
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSending, setIsSending] = useState(false);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+
+    setIsSending(true);
+
+    try {
+      const response = await fetch("https://formspree.io/f/xqenojng", {
+        method: "POST",
+        body: formData,
+        headers: {
+          Accept: "application/json",
+        },
+      });
+
+      if (response.ok) {
+        setIsSubmitted(true);
+        form.reset();
+      } else {
+        alert("Չհաջողվեց ուղարկել հայտը։ Խնդրում ենք փորձել կրկին։");
+      }
+    } catch (error) {
+      alert("Չհաջողվեց ուղարկել հայտը։ Ստուգեք ինտերնետ կապը և փորձեք կրկին։");
+    } finally {
+      setIsSending(false);
+    }
+  };
   const resetCalculation = () => {
     setSqm(0);
     setHours(0);
@@ -256,6 +340,12 @@ export default function App() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const scrollToTopMobile = () => {
+    if (window.innerWidth <= 720) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
 
   const selectedService = services.find((item) => item.id === service) || null;
 
@@ -381,7 +471,10 @@ ${selectedAddOnsSummary || "Չկան"}
 Ընդհանուր մոտավոր արժեք: ${formatAMD(calculation.total)}
 `;
 
-  const goNext = () => setStep((current) => Math.min(4, current + 1));
+  const goNext = () => {
+    setStep((current) => Math.min(4, current + 1));
+    setTimeout(scrollToTopMobile, 50);
+  };
   const goBack = () => {
     setStep((current) => {
       const nextStep = Math.max(1, current - 1);
@@ -392,6 +485,8 @@ ${selectedAddOnsSummary || "Չկան"}
 
       return nextStep;
     });
+
+    setTimeout(scrollToTopMobile, 50);
   };
 
   return (
@@ -414,6 +509,7 @@ ${selectedAddOnsSummary || "Չկան"}
                 }
 
                 setStep(item.number);
+                setTimeout(scrollToTopMobile, 50);
               }}
             >
               {item.label}
@@ -449,6 +545,7 @@ ${selectedAddOnsSummary || "Չկան"}
                   }
 
                   setStep(item.number);
+                  setTimeout(scrollToTopMobile, 50);
                 }}
               >
                 <span>{item.number}</span>
@@ -513,31 +610,15 @@ ${selectedAddOnsSummary || "Չկան"}
                         </button>
 
                         <div className={isActive ? "mobile-included-list open" : "mobile-included-list"}>
-                          <h3>Ինչ է ներառված</h3>
-                          <ul>
-                            {item.items.map((line) => (
-                              <li key={line}>
-                                <CheckCircle2 size={16} />
-                                <span>{line}</span>
-                              </li>
-                            ))}
-                          </ul>
+                          <div className="included-list-inner">
+                            <h3>Ինչ է ներառված</h3>
+                            <IncludedList service={item} />
+                          </div>
                         </div>
                       </div>
                     );
                   })}
                 </div>
-
-                {selectedService && (
-                  <div className="included-card">
-                    <h3>Ինչ է ներառված՝ {selectedService.title}</h3>
-                    <ul>
-                      {selectedService.items.map((item) => (
-                        <li key={item}><CheckCircle2 size={17} /><span>{item}</span></li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
               </div>
             )}
 
@@ -722,13 +803,18 @@ ${selectedAddOnsSummary || "Չկան"}
                     </button>
                   </div>
                 )}
-
-                {service && (
+                {isSubmitted && (
+                  <div className="thank-you-card">
+                    <CheckCircle2 size={34} />
+                    <h3>Շնորհակալություն 💚</h3>
+                    <p>Ձեր հայտը հաջողությամբ ուղարկվել է։ Մենք շուտով կկապվենք Ձեզ հետ։</p>
+                  </div>
+                )}
+                {service && !isSubmitted && (
                 <form
                   id="request-form"
                   className="request-form"
-                  action="https://formspree.io/f/xqenojng"
-                  method="POST"
+                  onSubmit={handleSubmit}
                   encType="multipart/form-data"
                 >
                   <input type="hidden" name="Ծառայություն" value={calculation.selectedService.label} />
@@ -788,13 +874,18 @@ ${selectedAddOnsSummary || "Չկան"}
               </button>
             ) : (
               <button
-                type="submit"
-                form="request-form"
+                type="button"
                 className="next-button request-send-bottom"
-                disabled={!service}
+                disabled={!service || isSending || isSubmitted}
+                onClick={() => {
+                  const form = document.getElementById("request-form");
+                  if (form) {
+                    form.requestSubmit();
+                  }
+                }}
               >
                 <MessageCircle size={22} />
-                Ուղարկել հայտ
+                {isSending ? "Ուղարկվում է..." : "Ուղարկել հայտ"}
               </button>
             )}
             </div>
