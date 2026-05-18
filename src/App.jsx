@@ -218,7 +218,7 @@ const calculatorAddOns = {
     { id: "ironing", label: "Արդուկում", price: 4000, type: "hours", unit: "ժամ" },
   ],
   deep: [
-    { id: "bathroom", label: "Սանհանգույց", price: 5000, type: "counter", unit: "հատ" },
+    { id: "bathroom", label: "Սանհանգույց (եթե 1-ից ավել է)", price: 5000, type: "counter", unit: "հատ" },
     { id: "fridge", label: "Սառնարանի մաքրում", price: 3000, type: "counter", unit: "հատ" },
     { id: "balcony", label: "Պատշգամբի մաքրում", price: 5000, type: "counter", unit: "հատ" },
     { id: "cabinets", label: "Դարակների մաքրում", price: 10000, type: "checkbox" },
@@ -333,6 +333,14 @@ export default function App() {
     setHours(0);
     setDrySelections({});
     setAddonValues({});
+  };
+  const getTodayDate = () => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, "0");
+    const day = String(today.getDate()).padStart(2, "0");
+
+    return `${year}-${month}-${day}`;
   };
 
   useEffect(() => {
@@ -844,7 +852,12 @@ ${selectedAddOnsSummary || "Չկան"}
 
                   <div className="form-field">
                     <label>Նախընտրելի օր</label>
-                    <input type="date" name="Նախընտրելի օր" required />
+                    <input
+                      type="date"
+                      name="Նախընտրելի օր"
+                      min={getTodayDate()}
+                      required
+                    />
                   </div>
 
                   <div className="form-field">
@@ -855,7 +868,7 @@ ${selectedAddOnsSummary || "Չկան"}
 
                   <div className="form-field">
                     <label>Լրացուցիչ նշումներ</label>
-                    <textarea name="Նշումներ" placeholder="Գրեք եթե կան հատուկ հատվածներ, կենդանիներ, շտապ պատվեր և այլն։" value={clientMessage} onChange={(e) => setClientMessage(e.target.value)} rows="5" />
+                    <textarea name="Նշումներ" placeholder="Հավելյալ նշումներ" value={clientMessage} onChange={(e) => setClientMessage(e.target.value)} rows="5" />
                   </div>
                 </form>
                 )}
