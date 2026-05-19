@@ -1402,3 +1402,55 @@ input[type="range"] {
   line-height: 1.6;
   font-size: 17px;
 }
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.language-switcher {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 999px;
+  background: rgba(41, 75, 58, .08);
+  border: 1px solid rgba(41, 75, 58, .12);
+}
+
+.language-switcher button {
+  border: 0;
+  background: transparent;
+  color: var(--dark);
+  font-weight: 900;
+  font-size: 13px;
+  line-height: 1;
+  padding: 9px 10px;
+  border-radius: 999px;
+}
+
+.language-switcher button.active {
+  background: var(--darker);
+  color: #fff;
+  box-shadow: 0 10px 24px rgba(20, 50, 41, .18);
+}
+
+@media (max-width: 720px) {
+  .mini-header {
+    justify-content: space-between !important;
+    gap: 10px !important;
+  }
+
+  .header-actions {
+    margin-left: auto;
+  }
+
+  .language-switcher {
+    padding: 3px;
+  }
+
+  .language-switcher button {
+    font-size: 12px;
+    padding: 8px 9px;
+  }
+}
