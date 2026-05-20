@@ -533,6 +533,19 @@ export default function App() {
 
   const formatAMD = (value) => `${new Intl.NumberFormat(lang === "ru" ? "ru-RU" : lang === "en" ? "en-US" : "hy-AM").format(Math.round(value || 0))} ${t.currency}`;
 
+
+  const trackMetaEvent = (eventName, params = {}) => {
+    if (typeof window !== "undefined" && typeof window.fbq === "function") {
+      window.fbq("track", eventName, params);
+    }
+  };
+
+  const trackCustomMetaEvent = (eventName, params = {}) => {
+    if (typeof window !== "undefined" && typeof window.fbq === "function") {
+      window.fbq("trackCustom", eventName, params);
+    }
+  };
+
   const steps = useMemo(() => t.navSteps.map((label, index) => ({ number: index + 1, label })), [t]);
 
   const serviceRates = useMemo(() => {
@@ -591,6 +604,7 @@ export default function App() {
   const [isSending, setIsSending] = useState(false);
 
   const handleLanguageChange = (nextLang) => {
+    trackCustomMetaEvent("LanguageChange", { language: nextLang });
     setLang(nextLang);
     localStorage.setItem("ychLanguage", nextLang);
   };
@@ -609,6 +623,18 @@ export default function App() {
       });
 
       if (response.ok) {
+        trackMetaEvent("Lead", {
+          content_name: "Request form submitted",
+          service_id: service || "not_selected",
+          service_name: calculation.selectedService.label,
+          area_m2: service === "ironing" || service === "dry" ? undefined : Number(sqm || 0),
+          hours: service === "ironing" ? Number(hours || 0) : undefined,
+          furniture_count: service === "dry" ? Number(dryTotalCount || 0) : undefined,
+          addons_count: calculation.addOnRows.length,
+          estimated_price: Number(calculation.total || 0),
+          currency: "AMD",
+          preferred_language: lang,
+        });
         setIsSubmitted(true);
         form.reset();
       } else {
@@ -647,29 +673,96 @@ export default function App() {
   };
 
   const handleServiceSelect = (id) => {
+    const selected = calculatorRates[id] || serviceRates[id];
+
     if (service === id) {
+      trackCustomMetaEvent("ServiceDeselected", {
+        service_id: id,
+        service_name: selected?.label || id,
+        preferred_language: lang,
+      });
       setService(null);
       setAddonValues({});
       setDrySelections({});
       return;
     }
+
+    trackMetaEvent("Search", {
+      search_string: selected?.label || id,
+      content_name: "Service selected",
+      service_id: id,
+      service_name: selected?.label || id,
+      preferred_language: lang,
+    });
+
     setService(id);
     setAddonValues({});
     if (id !== "dry") setDrySelections({});
   };
 
   const updateDryCount = (id, value) => {
+    const cleanValue = Math.max(0, Number(value) || 0);
+    const item = dryCleaningItems.find((dryItem) => dryItem.id === id);
+
+    trackMetaEvent("CustomizeProduct", {
+      content_name: "Dry cleaning item changed",
+      service_id: "dry",
+      service_name: calculatorRates.dry?.label || "Dry cleaning",
+      item_id: id,
+      item_name: item?.title || id,
+      quantity: cleanValue,
+      item_price: Number(item?.price || 0),
+      currency: "AMD",
+      preferred_language: lang,
+    });
+
     setDrySelections((current) => {
       const next = { ...current };
-      const cleanValue = Math.max(0, Number(value) || 0);
       if (cleanValue === 0) delete next[id];
       else next[id] = cleanValue;
       return next;
     });
   };
 
-  const updateAddon = (id, value) => setAddonValues((current) => ({ ...current, [id]: value }));
-  const toggleAddon = (id) => setAddonValues((current) => ({ ...current, [id]: !current[id] }));
+  const updateAddon = (id, value) => {
+    const addon = calculatorAddOns[service]?.find((item) => item.id === id);
+    const cleanValue = Number(value) || 0;
+
+    trackMetaEvent("CustomizeProduct", {
+      content_name: "Addon changed",
+      service_id: service || "not_selected",
+      service_name: calculation.selectedService.label,
+      addon_id: id,
+      addon_name: addon?.label || id,
+      quantity: cleanValue,
+      addon_price: Number(addon?.price || 0),
+      estimated_price: Number(calculation.total || 0),
+      currency: "AMD",
+      preferred_language: lang,
+    });
+
+    setAddonValues((current) => ({ ...current, [id]: value }));
+  };
+
+  const toggleAddon = (id) => {
+    const addon = calculatorAddOns[service]?.find((item) => item.id === id);
+    const nextValue = !addonValues[id];
+
+    trackMetaEvent("CustomizeProduct", {
+      content_name: "Addon toggled",
+      service_id: service || "not_selected",
+      service_name: calculation.selectedService.label,
+      addon_id: id,
+      addon_name: addon?.label || id,
+      selected: nextValue,
+      addon_price: Number(addon?.price || 0),
+      estimated_price: Number(calculation.total || 0),
+      currency: "AMD",
+      preferred_language: lang,
+    });
+
+    setAddonValues((current) => ({ ...current, [id]: !current[id] }));
+  };
   const dryTotalCount = Object.values(drySelections).reduce((sum, value) => sum + Number(value || 0), 0);
 
   const calculation = useMemo(() => {
@@ -752,7 +845,48 @@ ${t.orderSummary.addonsPrice}: ${formatAMD(calculation.addOnsTotal)}
 ${t.orderSummary.totalPrice}: ${formatAMD(calculation.total)}
 `;
 
+  const handleSqmChange = (value) => {
+    const cleanValue = Math.max(0, Number(value) || 0);
+    setSqm(cleanValue);
+  };
+
+  const handleHoursChange = (value) => {
+    const cleanValue = Math.max(0, Number(value) || 0);
+    setHours(cleanValue);
+  };
+
+  const goToStep = (nextStep, source = "step_navigation") => {
+    trackMetaEvent("ViewContent", {
+      content_name: `Step ${nextStep}`,
+      source,
+      step: nextStep,
+      service_id: service || "not_selected",
+      service_name: calculation.selectedService.label,
+      estimated_price: Number(calculation.total || 0),
+      currency: "AMD",
+      preferred_language: lang,
+    });
+
+    setStep(nextStep);
+    setTimeout(scrollToTopMobile, 50);
+  };
+
   const goNext = () => {
+    if (step === 2 && service) {
+      trackMetaEvent("CustomizeProduct", {
+        content_name: "Price calculated",
+        service_id: service,
+        service_name: calculation.selectedService.label,
+        area_m2: service === "ironing" || service === "dry" ? undefined : Number(sqm || 0),
+        hours: service === "ironing" ? Number(hours || 0) : undefined,
+        furniture_count: service === "dry" ? Number(dryTotalCount || 0) : undefined,
+        addons_count: calculation.addOnRows.length,
+        estimated_price: Number(calculation.total || 0),
+        currency: "AMD",
+        preferred_language: lang,
+      });
+    }
+
     setStep((current) => Math.min(4, current + 1));
     setTimeout(scrollToTopMobile, 50);
   };
@@ -782,8 +916,7 @@ ${t.orderSummary.totalPrice}: ${formatAMD(calculation.total)}
                 className={step === item.number ? "active" : ""}
                 onClick={() => {
                   if (item.number === 1) resetCalculation();
-                  setStep(item.number);
-                  setTimeout(scrollToTopMobile, 50);
+                  goToStep(item.number, "top_navigation");
                 }}
               >
                 {item.label}
@@ -818,8 +951,7 @@ ${t.orderSummary.totalPrice}: ${formatAMD(calculation.total)}
                 className={step === item.number ? "step-pill active" : step > item.number ? "step-pill done" : "step-pill"}
                 onClick={() => {
                   if (item.number === 1) { resetCalculation(); setService(null); }
-                  setStep(item.number);
-                  setTimeout(scrollToTopMobile, 50);
+                  goToStep(item.number, "steps_bar");
                 }}
               >
                 <span>{item.number}</span>
@@ -875,7 +1007,7 @@ ${t.orderSummary.totalPrice}: ${formatAMD(calculation.total)}
               <div className="step-content">
                 <div className="step-title"><span>{t.step2Label}</span><h2>{t.step2Title}</h2><p>{service === "dry" ? t.step2Text.dry : service === "ironing" ? t.step2Text.ironing : t.step2Text.default}</p></div>
                 {!service ? (
-                  <div className="empty-addons"><Calculator size={28} /><h3>{t.noServiceTitle}</h3><p>{t.noServiceCalcText}</p><button type="button" className="next-button inline-action" onClick={() => setStep(1)}>{t.chooseService}</button></div>
+                  <div className="empty-addons"><Calculator size={28} /><h3>{t.noServiceTitle}</h3><p>{t.noServiceCalcText}</p><button type="button" className="next-button inline-action" onClick={() => goToStep(1, "choose_service_button")}>{t.chooseService}</button></div>
                 ) : service === "dry" ? (
                   <div className="dry-area">
                     <div className="label-line"><strong>{t.chooseFurniture}</strong><b>{dryTotalCount} {t.pieces}</b></div>
@@ -898,9 +1030,9 @@ ${t.orderSummary.totalPrice}: ${formatAMD(calculation.total)}
                     </div>
                   </div>
                 ) : service === "ironing" ? (
-                  <div className="input-card"><div className="label-line"><strong>{t.ironingHours}</strong><b>{hours} {t.hour}</b></div><input className="number-input" type="number" min="1" value={hours} onChange={(e) => setHours(Number(e.target.value))} /></div>
+                  <div className="input-card"><div className="label-line"><strong>{t.ironingHours}</strong><b>{hours} {t.hour}</b></div><input className="number-input" type="number" min="1" value={hours} onChange={(e) => handleHoursChange(e.target.value)} /></div>
                 ) : (
-                  <div className="input-card"><div className="label-line"><strong>{t.apartmentArea}</strong><b>{sqm} {t.sqm}</b></div><input type="range" min="1" max="250" value={sqm} onChange={(e) => setSqm(Number(e.target.value))} /><input className="number-input" type="number" min="1" value={sqm} onChange={(e) => setSqm(Number(e.target.value))} /></div>
+                  <div className="input-card"><div className="label-line"><strong>{t.apartmentArea}</strong><b>{sqm} {t.sqm}</b></div><input type="range" min="1" max="250" value={sqm} onChange={(e) => handleSqmChange(e.target.value)} /><input className="number-input" type="number" min="1" value={sqm} onChange={(e) => handleSqmChange(e.target.value)} /></div>
                 )}
                 <div className="total-panel"><span>{t.approximatePrice}</span><strong>{formatAMD(calculation.total)}</strong><small>{t.minPriceNotes[service] || `${calculation.selectedService.label} — ${calculation.selectedService.range}`}</small></div>
               </div>
@@ -910,7 +1042,7 @@ ${t.orderSummary.totalPrice}: ${formatAMD(calculation.total)}
               <div className="step-content">
                 <div className="step-title"><span>{t.step3Label}</span><h2>{t.step3Title}</h2><p>{t.step3Text}</p></div>
                 {!service ? (
-                  <div className="empty-addons"><CheckCircle2 size={28} /><h3>{t.noServiceTitle}</h3><p>{t.noServiceAddonText}</p><button type="button" className="next-button inline-action" onClick={() => setStep(1)}>{t.chooseService}</button></div>
+                  <div className="empty-addons"><CheckCircle2 size={28} /><h3>{t.noServiceTitle}</h3><p>{t.noServiceAddonText}</p><button type="button" className="next-button inline-action" onClick={() => goToStep(1, "choose_service_button")}>{t.chooseService}</button></div>
                 ) : calculatorAddOns[service]?.length > 0 ? (
                   <div className="addon-grid">
                     {calculatorAddOns[service].map((item) => {
@@ -933,7 +1065,7 @@ ${t.orderSummary.totalPrice}: ${formatAMD(calculation.total)}
               <div className="step-content">
                 <div className="step-title"><span>{t.step4Label}</span><h2>{t.step4Title}</h2><p>{t.step4Text}</p></div>
                 <div className="photo-note"><Camera size={24} /><div><strong>{t.photoTitle}</strong><span>{t.photoText}</span></div></div>
-                {!service && <div className="empty-addons"><CheckCircle2 size={28} /><h3>{t.noServiceTitle}</h3><p>{t.noServiceRequestText}</p><button type="button" className="next-button inline-action" onClick={() => setStep(1)}>{t.chooseService}</button></div>}
+                {!service && <div className="empty-addons"><CheckCircle2 size={28} /><h3>{t.noServiceTitle}</h3><p>{t.noServiceRequestText}</p><button type="button" className="next-button inline-action" onClick={() => goToStep(1, "choose_service_button")}>{t.chooseService}</button></div>}
                 {isSubmitted && <div className="thank-you-card"><CheckCircle2 size={34} /><h3>{t.thankTitle}</h3><p>{t.thankText}</p></div>}
                 {service && !isSubmitted && (
                   <form id="request-form" className="request-form" onSubmit={handleSubmit} encType="multipart/form-data">
@@ -962,7 +1094,7 @@ ${t.orderSummary.totalPrice}: ${formatAMD(calculation.total)}
               {step < 4 ? (
                 <button type="button" className="next-button" onClick={goNext} disabled={step === 1 && !service}>{t.continue}<ChevronRight size={18} /></button>
               ) : (
-                <button type="button" className="next-button request-send-bottom" disabled={!service || isSending || isSubmitted} onClick={() => { const form = document.getElementById("request-form"); if (form) form.requestSubmit(); }}>
+                <button type="button" className="next-button request-send-bottom" disabled={!service || isSending || isSubmitted} onClick={() => { trackMetaEvent("InitiateCheckout", { content_name: "Send request button clicked", service_id: service || "not_selected", service_name: calculation.selectedService.label, estimated_price: Number(calculation.total || 0), currency: "AMD", preferred_language: lang }); const form = document.getElementById("request-form"); if (form) form.requestSubmit(); }}>
                   <MessageCircle size={22} />{isSending ? t.sending : t.sendRequest}
                 </button>
               )}
@@ -973,15 +1105,15 @@ ${t.orderSummary.totalPrice}: ${formatAMD(calculation.total)}
         <footer className="mini-footer">
           <div className="footer-brand"><img src={logo} alt="Your Clean Home" /><p>{t.footerText}</p></div>
           <div className="footer-links">
-            <a href="tel:+37441101143"><Phone size={18} />041 101 143</a>
-            <a href="https://wa.me/37441101143" target="_blank" rel="noreferrer"><MessageCircle size={18} />WhatsApp</a>
-            <a href="https://t.me/your_clean_home" target="_blank" rel="noreferrer"><Send size={18} />Telegram</a>
-            <a href="https://instagram.com/your_clean_home.yerevan" target="_blank" rel="noreferrer"><InstagramIcon size={18} />Instagram</a>
+            <a href="tel:+37441101143" onClick={() => trackMetaEvent("Contact", { content_name: "Phone click", contact_method: "phone", service_id: service || "not_selected", estimated_price: Number(calculation.total || 0), preferred_language: lang })}><Phone size={18} />041 101 143</a>
+            <a href="https://wa.me/37441101143" target="_blank" rel="noreferrer" onClick={() => trackMetaEvent("Contact", { content_name: "WhatsApp click", contact_method: "whatsapp", service_id: service || "not_selected", estimated_price: Number(calculation.total || 0), preferred_language: lang })}><MessageCircle size={18} />WhatsApp</a>
+            <a href="https://t.me/your_clean_home" target="_blank" rel="noreferrer" onClick={() => trackMetaEvent("Contact", { content_name: "Telegram click", contact_method: "telegram", service_id: service || "not_selected", estimated_price: Number(calculation.total || 0), preferred_language: lang })}><Send size={18} />Telegram</a>
+            <a href="https://instagram.com/your_clean_home.yerevan" target="_blank" rel="noreferrer" onClick={() => trackMetaEvent("Contact", { content_name: "Instagram click", contact_method: "instagram", service_id: service || "not_selected", estimated_price: Number(calculation.total || 0), preferred_language: lang })}><InstagramIcon size={18} />Instagram</a>
           </div>
         </footer>
       </main>
 
-      {showScrollTop && <button className="scroll-top-btn" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} aria-label="Go to top">↑</button>}
+      {showScrollTop && <button className="scroll-top-btn" onClick={() => { trackCustomMetaEvent("ScrollTopClick", { preferred_language: lang }); window.scrollTo({ top: 0, behavior: "smooth" }); }} aria-label="Go to top">↑</button>}
     </div>
   );
 }
